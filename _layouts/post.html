@@ -92,7 +92,9 @@ script_includes:
           {% endif %}
 
           <!-- read time -->
-          <!-- {% include read-time.html content=content prompt=true lang=lang %} -->
+          {%- comment -%}
+          {% include read-time.html content=content prompt=true lang=lang %}
+          {%- endcomment -%}
         </div>
       </div>
     </div>
