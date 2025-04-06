@@ -1,5 +1,6 @@
 ---
-title: my first post
+layout: post
+title: "my first post"
 date: 2025-04-06 18:10:00
 ---
 
