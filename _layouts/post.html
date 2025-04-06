@@ -16,7 +16,7 @@ script_includes:
 
 <article class="px-1" data-toc="{{ enable_toc }}">
   <header>
-    <h1 data-toc-skip>dsds{{ page.title }}</h1>
+    <h1 data-toc-skip>{{ page.title }}</h1>
     {% if page.description %}
       <p class="post-desc fw-light mb-4">{{ page.description }}</p>
     {% endif %}
@@ -92,7 +92,7 @@ script_includes:
           {% endif %}
 
           <!-- read time -->
-          {% include read-time.html content=content prompt=true lang=lang %}
+          <!-- {% include read-time.html content=content prompt=true lang=lang %} -->
         </div>
       </div>
     </div>
