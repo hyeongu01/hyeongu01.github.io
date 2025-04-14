@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://hyeongo01.github.io/sitemap.xml
+Sitemap: https://hyeongu01.github.io/sitemap.xml
