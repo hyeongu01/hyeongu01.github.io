@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "[프로그래머스/swift] 프로그래머스 충돌위험 찾기 문제풀이"
-date: 2025-07-13 01:39:36 +0900
+date: 2025-07-13 01:41:53 +0900
 categories: [프로그래머스, swift]
 tags: [코딩테스트, swift, 프로그래머스]
 ---
@@ -30,6 +30,7 @@ tags: [코딩테스트, swift, 프로그래머스]
 	- `routes` 가 3개 이상이라면 getPath() 를 여러번 반복해 최종적인 궤적 리스트를 얻는다! -> `readRoute()` 함수로 명명
 
 #### getPath() 함수 구현
+
 ```swift
 // from 에서 to 까지의 최단 경로로 이동하는 궤적을 반환 (초기 위치 미포함)
 func getPath(from: [Int], to: [Int]) -> [[Int]] {
@@ -62,6 +63,7 @@ func getPath(from: [Int], to: [Int]) -> [[Int]] {
 ```
 
 #### readRoute() 함수 구현
+
 ```swift
 // points 와 route 하나를 받았을 때 route 반환
 func readRoute(_ points: [[Int]], _ route: [Int]) -> [[Int]] {
@@ -79,6 +81,7 @@ func readRoute(_ points: [[Int]], _ route: [Int]) -> [[Int]] {
 
 #### 최종 문제 풀이
 - 충돌하는 수를 계산하는 함수가 필요할 것 같아 `countCrash()` 함수를 추가하였다.
+
 ```swift
 import Foundation
 
