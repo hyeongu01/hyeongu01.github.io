@@ -1,8 +1,8 @@
 ---
 layout: post
 title: "[프로그래머스/swift] 프로그래머스 완전범죄 DP 를 이용한 풀이"
-date: 2025-07-11 22:04:50 +0900
-categories: [프로그래머스, DP, BFS]
+date: 2025-07-13 00:32:53 +0900
+categories: [프로그래머스, swift]
 tags: [swift, DP, BFS, 프로그래머스]
 ---
 
