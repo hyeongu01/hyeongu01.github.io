@@ -1,0 +1,19 @@
+{% assign callout_type = include.type | default: 'info' %}
+<div class="callout {{ callout_type }}">
+  {% if include.title %}
+    {% assign title = include.title %}
+  {% elsif callout_type == 'tip' %}
+    {% assign title = '💡 팁' %}
+  {% elsif callout_type == 'info' %}
+    {% assign title = 'ℹ️ 정보' %}
+  {% elsif callout_type == 'warning' %}
+    {% assign title = '⚠️ 주의' %}
+  {% elsif callout_type == 'danger' %}
+    {% assign title = '❌ 경고' %}
+  {% else %}
+    {% assign title = '📌 알림' %}
+  {% endif %}
+
+  <strong class="callout-title">{{ title }}</strong><br>
+  {{ include.content | markdownify }}
+</div>
