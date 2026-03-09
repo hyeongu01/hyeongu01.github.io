@@ -7,10 +7,13 @@ tags: [typescript, backend, oauth]
 ---
 
 ---
+
+
+{% include callout.html type="tip" content="이 글은 네이버 소셜 로그인을 구현하기 위해 알아야 할 흐름에 대한 정리이다." %}
+
 ### 개요
 
--   네이버 소셜 로그인 구현 과정 기록
--   가계부 앱을 만들기 위해 백엔드 API 를 만드는 과정이다.
+-   네이버 소셜 로그인 구현을 위한 개념 공부
 
 ---
 
