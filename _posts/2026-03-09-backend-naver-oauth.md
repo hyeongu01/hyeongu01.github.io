@@ -2,7 +2,7 @@
 layout: post
 title: "[backend] 네이버 소셜 로그인 흐름"
 date: 2026-03-09 11:19:00 +0900
-categories: [backend]
+categories: [backend, oauth]
 tags: [typescript, backend, oauth]
 ---
 

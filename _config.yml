@@ -17,7 +17,7 @@ timezone: Asia/Seoul
 
 title: "현우's Devlog" # the main title
 
-tagline: ios 개발자 지망생 현우의 devlog # it will display as the subtitle
+tagline: iOS / Backend 개발자의 devlog # it will display as the subtitle
 
 description: >- # used by seo meta and the atom feed
   A minimal, responsive and feature-rich Jekyll theme for technical writing.
