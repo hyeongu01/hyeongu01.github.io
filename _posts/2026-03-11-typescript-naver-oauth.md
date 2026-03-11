@@ -30,11 +30,16 @@ tags: [typescript, backend, oauth]
        - 추후 API 생성할 때 Callback URL 을 그에 맞도록 변경하면 된다.
   ![](/assets/img/2603/네이버_애플리케이션_등록_2.png)
 
-1. 생성 페이지
+4. 생성 페이지
     ![](/assets/img/2603/네이버_애플리케이션_등록_3.png)
 
     > `ClientID`, `Client Secret` 은 추후 인증에서 사용되니 잘 적어두고 `Client Secret` 은 유출에 주의하자.
     {: .prompt-tip } 
+
+5. 맴버 관리
+  - 네이버 계정 주인은 등록할 필요 없지만, 추후 테스터를 구할 때 여기서 맴버를 추가해 주면 된다.
+    ![](/assets/img/2603/네이버_애플리케이션_등록_4.png)
+  
 
 ## 2. 백엔드 프로젝트에 적용
 > 프로젝트 초기 설정은 아래 포스트 참고  
@@ -44,6 +49,8 @@ tags: [typescript, backend, oauth]
 > 네이버 소셜로그인 흐름은 아래 포스트 참고  
 [\[backend\] 네이버 소셜 로그인 흐름](https://hyeongu01.github.io/posts/2026/03/backend-naver-oauth/)
 {: .prompt-tip } 
+
+
 
 
 
