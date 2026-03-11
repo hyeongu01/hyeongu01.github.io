@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[express/typescript] 네이버 소셜 로그인 구현"
+title: "[express/typescript] 네이버 소셜 로그인 구현 (작성중)"
 date: 2026-03-11 10:19:00 +0900
 categories: [backend, oauth]
 tags: [typescript, backend, oauth]

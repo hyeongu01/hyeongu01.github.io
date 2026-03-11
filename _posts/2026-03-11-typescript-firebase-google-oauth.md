@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "[express/typescript] firebase google 소셜로그인"
+title: "[express/typescript] firebase google 소셜로그인 (작성중)"
 date: 2026-04-12 10:00:00 +0900
 categories: [backend, oauth]
 tags: [typescript, backend, oauth, firebase]
