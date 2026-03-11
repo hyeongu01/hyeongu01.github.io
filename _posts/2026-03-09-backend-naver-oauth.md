@@ -1,7 +1,6 @@
 ---
 layout: post
 title: "[backend] 네이버 소셜 로그인 흐름"
-date: 2026-03-09 11:19:00 +0900
 categories: [backend, oauth]
 tags: [typescript, backend, oauth]
 ---
@@ -9,7 +8,9 @@ tags: [typescript, backend, oauth]
 ---
 
 
-{% include callout.html type="tip" content="이 글은 네이버 소셜 로그인을 구현하기 위해 알아야 할 흐름에 대한 정리이다." %}
+> 이 글은 네이버 소셜 로그인을 구현하기 위해 알아야 할 흐름에 대한 정리이다.
+{: .prompt-tip }
+
 
 ### 개요
 
@@ -25,8 +26,8 @@ tags: [typescript, backend, oauth]
 -   서비스에서 필요한 최소한의 정보를 선택하는게 권장된다.
 -   필자는 필수로 사용자 이름과 선택으로 생년월일을 선택하였다.
 
-| | |
-|---|---|
+|                                                          |                                                          |
+| -------------------------------------------------------- | -------------------------------------------------------- |
 | ![](/assets/img/2603/애플리케이션%20등록%20페이지-1.png) | ![](/assets/img/2603/애플리케이션%20등록%20페이지-1.png) |
 
 2. 서비스, callback URL 설정
