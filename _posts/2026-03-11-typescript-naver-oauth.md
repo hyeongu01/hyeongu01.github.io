@@ -1,7 +1,7 @@
 ---
 layout: post
 title: "[express/typescript] 네이버 소셜 로그인 구현"
-date: 2026-05-11 10:19:00 +0900
+date: 2026-03-11 10:19:00 +0900
 categories: [backend, oauth]
 tags: [typescript, backend, oauth]
 ---
@@ -33,9 +33,20 @@ tags: [typescript, backend, oauth]
 1. 생성 페이지
     ![](/assets/img/2603/네이버_애플리케이션_등록_3.png)
 
-    {% include callout.html type="tip" content="ClientID, Client Secret 은 추후 인증에서 사용되니 잘 적어두고 Client Secret 은 유출에 주의하자." %}
+    > `ClientID`, `Client Secret` 은 추후 인증에서 사용되니 잘 적어두고 `Client Secret` 은 유출에 주의하자.
+    {: .prompt-tip } 
 
-## 2. 백엔드 프로젝트 초기 설정
+## 2. 백엔드 프로젝트에 적용
+> 프로젝트 초기 설정은 아래 포스트 참고  
+[\[express/typescript\] 프로젝트 구조 (탬플릿) 에 대한 고민 및 결정](https://hyeongu01.github.io/posts/2026/03/typescript-express-project-template/)
+{: .prompt-tip } 
+
+> 네이버 소셜로그인 흐름은 아래 포스트 참고  
+[\[backend\] 네이버 소셜 로그인 흐름](https://hyeongu01.github.io/posts/2026/03/backend-naver-oauth/)
+{: .prompt-tip } 
+
+
+
 
 
 
