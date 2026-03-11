@@ -5,7 +5,6 @@ order: 4
 ---
 
 
-
 ---
 
 ## 기술 스택
@@ -38,3 +37,6 @@ order: 4
 
 - **GitHub** : [github.com/hyeongu01](https://github.com/hyeongu01)
 - **Email** : [cdy4312@icloud.com](mailto:cdy4312@icloud.com)
+
+<!-- > Add Markdown syntax content to file `_tabs/about.md`{: .filepath } and it will show up on this page.
+{: .prompt-tip } -->
