@@ -14,6 +14,7 @@ tags: [typescript, backend, oauth]
   - `typescript`
   - `express`
   - `node.js`
+  - `zod`
 
 ## 1. 네이버 애플리케이션 생성
 [NaverDevelopers - 애플리케이션 생성](https://developers.naver.com/apps/#/register)
@@ -50,7 +51,52 @@ tags: [typescript, backend, oauth]
 [\[backend\] 네이버 소셜 로그인 흐름](https://hyeongu01.github.io/posts/2026/03/backend-naver-oauth/)
 {: .prompt-tip } 
 
+```typescript
+// src/features/auth/auth.router.ts
+import express from "express";
+import * as controller from "./auth.controller";
 
+const router = express.Router();
+
+router.get("/naver/callback", controller.naverLogin);
+
+export default router;
+```
+
+```typescript
+// src/features/auth/auth.controller.ts
+import type {Request, Response} from "express";
+import {CustomError, makeResponse} from "@common/CustomResponse";
+import * as service from "./auth.service";
+import {NaverLoginParamsSchema} from "@features/auth/auth.dto";
+
+export const naverLogin = async (req: Request, res: Response) => {
+    const result = NaverLoginParamsSchema.safeParse(req.query);
+    if (!result.success) throw CustomError.BAD_REQUEST();
+
+    const data = await service.naverLogin(result.data);
+    return res.status(200).json(makeResponse({data}));
+}
+```
+
+```typescript
+// src/features/auth/auth.dto.ts
+import * as z from "zod";
+
+// 네이버 로그인 서비스 파라메터 스키마
+export const NaverLoginParamsSchema = z.object({
+    code: z.string(),
+    state: z.string(),
+});
+// 네이버 로그인 서비스 파라메터 타입
+export type NaverLoginParams = z.infer<typeof NaverLoginParamsSchema>;
+
+// 로그인 결과 response
+export type LoginResponse = {
+    accessToken: string,
+    refreshToken: string,
+}
+```
 
 
 
