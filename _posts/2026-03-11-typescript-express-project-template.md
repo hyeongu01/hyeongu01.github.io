@@ -152,13 +152,17 @@ src/
 </details>
 
 ### 프로젝트 구성
-[Github: hyeongu01/TS-Express-Prisma-Backend-Architecture](https://github.com/hyeongu01/TS-Express-Prisma-Backend-Architecture)
+
+[![](https://gh-card.dev/repos/hyeongu01/TS-Express-Prisma-Backend-Architecture.svg?theme=dark)](https://github.com/hyeongu01/TS-Express-Prisma-Backend-Architecture)
+
+
 
 <details>
 <summary>탬플릿 업데이트 내역</summary>
 <div markdown="1">
 
 - \[2026.03.11\] 프로젝트 생성
+- \[2026.03.12\] passport, redis, 네이버 로그인 샘플 코드 추가
 </div>
 </details>
 
