@@ -5,6 +5,7 @@ categories: [backend, oauth]
 tags: [typescript, backend, oauth]
 ---
 
+---
 ## 0. 개요
 - 구현 목표
   - 네이버 애플리케이션 설정
@@ -13,8 +14,9 @@ tags: [typescript, backend, oauth]
   - `typescript`
   - `express`
   - `node.js`
-  - `zod`
+  - `ajv`
 
+---
 ## 1. 네이버 애플리케이션 생성
 [NaverDevelopers - 애플리케이션 생성](https://developers.naver.com/apps/#/register)
 
@@ -40,7 +42,7 @@ tags: [typescript, backend, oauth]
   - 네이버 계정 주인은 등록할 필요 없지만, 추후 테스터를 구할 때 여기서 맴버를 추가해 주면 된다.
     ![](/assets/img/2603/네이버_애플리케이션_등록_4.png)
   
-
+---
 ## 2. 백엔드 프로젝트에 적용
 > 프로젝트 초기 설정은 아래 포스트 참고  
 [\[express/typescript\] 프로젝트 구조 (탬플릿) 에 대한 고민 및 결정](/posts/2026/03/typescript-express-project-template/)
@@ -65,9 +67,7 @@ router.get("/naver/login", controller.naverRedirect);
 export default router;
 ```
 {:file="src/features/auth/auth.router.ts"}
-{:file="src/features/auth/auth.router.ts"}
 
-```ts
 ```ts
 import type {Request, Response} from "express";
 import {makeResponse} from "@common/CustomResponse";
@@ -171,44 +171,18 @@ export async function login(params: LoginParams): Promise<LoginResponse> {
     await repository.createRefreshToken(user.id, hashedRefreshToken, deviceId);
     return tokens;
 }
-
-export const NaverProfileSchema = z.object({
-    id: z.string(),
-    name: z.string(),
-    birthday: z.string().optional(),    // MM-dd 형식
-    birthyear: z.string().optional(),   // yyyy 형식
-});
-export type NaverProfile = z.infer<typeof NaverProfileSchema>;
-
-export const LoginParamsSchema = z.object({
-    provider: z.string().uppercase(),
-    providerId: z.string(),
-    name: z.string(),
-    birthDate: z.date().optional(),
-});
-export type LoginParams = z.infer<typeof LoginParamsSchema>;
-
-
-export const CreateUserParamsSchema = z.object({
-    name: z.string(),
-    timezone: z.string().optional(),
-    currency: z.string().length(3).optional(),
-    birthDate: z.date().optional(),
-    provider: z.string().uppercase(),
-    providerId: z.string(),
-})
-export type CreateUserParams = z.infer<typeof CreateUserParamsSchema>;
 ```
 {:file="src/features/auth/auth.service.ts"}
 
 
-
+---
 ## 3. 결론
 - 네이버 소셜 로그인 흐름을 이해하고, 그 과정을 검증하였다.
 - redis 를 사용한 캐싱을 통해 state 검증 기능을 추가하였다.
 - ajv 검증 라이브러리를 통해 입력 검증을 하였다.
+- `typescript`, `express` 환경에서 네이버 소셜 로그인을 구현해 보았다.
 
-> 전체 프로젝트는 아래 repo 에서 볼 수 있습니다.   
-[\[Github\]: hyeongu01/CashMan-Backend-TS](https://github.com/hyeongu01/CashMan-Backend-TS)
-{: .prompt-info } 
+---
 
+> 전체 프로젝트는 아래 repo 에서 확인할 수 있다.  
+[![](https://gh-card.dev/repos/hyeongu01/CashMan-Backend-TS.svg?theme=dark)](https://github.com/hyeongu01/CashMan-Backend-TS)
