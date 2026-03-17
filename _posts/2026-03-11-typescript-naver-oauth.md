@@ -50,45 +50,67 @@ tags: [typescript, backend, oauth]
 [\[backend\] 네이버 소셜 로그인 흐름](/posts/2026/03/backend-naver-oauth/)
 {: .prompt-tip } 
 
+
 ```ts
-import express from "express";
+import {Router} from "express";
 import * as controller from "./auth.controller";
 
-const router = express.Router();
+const router = Router();
 
+// naver login callback API
 router.get("/naver/callback", controller.naverLogin);
+// naver login url 생성 및 Redirect API
+router.get("/naver/login", controller.naverRedirect);
 
 export default router;
 ```
 {:file="src/features/auth/auth.router.ts"}
+{:file="src/features/auth/auth.router.ts"}
 
 ```ts
+```ts
 import type {Request, Response} from "express";
-import {CustomError, makeResponse} from "@common/CustomResponse";
+import {makeResponse} from "@common/CustomResponse";
 import * as service from "./auth.service";
-import {NaverLoginParamsSchema} from "@features/auth/auth.dto";
+import {validateNaverLoginParams} from "@features/auth/auth.dto";
+import {generateNaverLoginURL} from "@common/auth/naverLogin";
 
 export const naverLogin = async (req: Request, res: Response) => {
-    const result = NaverLoginParamsSchema.safeParse(req.query);
-    if (!result.success) throw CustomError.BAD_REQUEST();
+    const params = req.query;
+    if (!validateNaverLoginParams(params)) throw validateNaverLoginParams.errors;
 
-    const data = await service.naverLogin(result.data);
+    const data = await service.naverLogin(params);
     return res.status(200).json(makeResponse({data}));
+};
+
+export const naverRedirect = async (req: Request, res: Response) => {
+    const naverLoginUrl = await generateNaverLoginURL();
+    return res.status(302).setHeader('Location', naverLoginUrl).end();
 }
+
+// generateNaverLoginURL(): 
+//   무작위 state 를 ulid 로 생성하고, redis 에 저장하여 로그인 url 을 만든다.
+//   state 는 추후 callback API 에서 redis 값으로 검증한다.
 ```
-{: file='src/features/auth/auth.controller.ts'}
+{:file="src/features/auth/auth.router.ts"}
 
 ```ts
 import config from "@config/config";
-import {LoginParams, LoginResponse, NaverLoginParams, NaverProfile, NaverProfileSchema} from "@features/auth/auth.dto";
+import {
+    type NaverLoginParams,
+    type LoginResponse,
+    type LoginParams,
+    validateNaverProfile,
+} from "@features/auth/auth.dto";
 import {customError} from "@common/CustomResponse";
 import axios from "axios";
 import * as repository from "./auth.repository";
 import {AuthProvider} from "@common/type";
 import {User} from "@features/users/users.dto";
-import { encodeJWT } from "@common/auth/jwt";
+import {encodeJWT} from "@common/auth/jwt";
 import {ulid} from "ulid";
 import {createHash} from "crypto";
+import redis from "@libs/redis";
 
 export const naverLogin = async (params: NaverLoginParams): Promise<LoginResponse> => {
     // code, state 분리
@@ -97,6 +119,8 @@ export const naverLogin = async (params: NaverLoginParams): Promise<LoginRespons
     if (!config.naver) throw customError.SERVER_ERROR();
 
     // redis 에서 state 검증하는 코드 추가
+    const exists = await redis.del(`naverLoginState:${state}`);
+    if (!exists) throw customError.UNAUTHORIZED("state is not valid");
 
     // access_token 발급 (네이버 서버 jwt)
     const tokenResult = await axios.get("https://nid.naver.com/oauth2.0/token", {
@@ -118,9 +142,8 @@ export const naverLogin = async (params: NaverLoginParams): Promise<LoginRespons
             Authorization: `${token_type} ${access_token}`,
         }
     });
-    const result = NaverProfileSchema.safeParse(profileResult.data.response);
-    if (!result.success) throw customError.SERVER_ERROR("네이버 프로필 조회 실패");
-    const profile: NaverProfile = result.data;
+    const profile = profileResult.data.response;
+    if (!validateNaverProfile(profile)) throw validateNaverProfile.errors;
 
     const loginParams: LoginParams = {
         providerId: profile.id,
@@ -128,14 +151,14 @@ export const naverLogin = async (params: NaverLoginParams): Promise<LoginRespons
         name: profile.name,
         birthDate: (() => {
             const date = new Date(`${profile.birthyear}-${profile.birthday}`);
-            return isNaN(date.getTime()) ? undefined : date
+            return isNaN(date.getTime()) ? undefined : date.toISOString().split("T")[0]
         })()
     };
 
     return await login(loginParams);
 }
 
-async function login(params: LoginParams): Promise<LoginResponse> {
+export async function login(params: LoginParams): Promise<LoginResponse> {
     const result: User | null = await repository.getUserByProvider(params.provider, params.providerId);
     const user: User = result ? result : await repository.createUser(params);
 
@@ -147,26 +170,6 @@ async function login(params: LoginParams): Promise<LoginResponse> {
 
     await repository.createRefreshToken(user.id, hashedRefreshToken, deviceId);
     return tokens;
-}
-```
-{: file='src/features/auth/auth.service.ts'}
-
-
-```ts
-import * as z from "zod";
-
-// 네이버 로그인 서비스 파라메터 스키마
-export const NaverLoginParamsSchema = z.object({
-    code: z.string(),
-    state: z.string(),
-});
-// 네이버 로그인 서비스 파라메터 타입
-export type NaverLoginParams = z.infer<typeof NaverLoginParamsSchema>;
-
-// 로그인 결과 response
-export type LoginResponse = {
-    accessToken: string,
-    refreshToken: string,
 }
 
 export const NaverProfileSchema = z.object({
@@ -196,17 +199,16 @@ export const CreateUserParamsSchema = z.object({
 })
 export type CreateUserParams = z.infer<typeof CreateUserParamsSchema>;
 ```
-{: file='src/features/auth/auth.dto.ts'}
-
+{:file="src/features/auth/auth.service.ts"}
 
 
 
 ## 3. 결론
-- 네이버 에플리케이션 등록 및 설정을 알아보았다.
-- 네이버 소셜 로그인의 한 사이클을 구현해 보았다.
-- `zod` 를 통해 형식 검증을 하였다.
-- 본 프로젝트는 `Typescript`, `Prisma`, `Express` 를 사용하는 프로젝트의 탬플릿으로 설계되어있다. 
-  - 추후 코드는 변경될 예정.
+- 네이버 소셜 로그인 흐름을 이해하고, 그 과정을 검증하였다.
+- redis 를 사용한 캐싱을 통해 state 검증 기능을 추가하였다.
+- ajv 검증 라이브러리를 통해 입력 검증을 하였다.
 
-[![](https://gh-card.dev/repos/hyeongu01/TS-Express-Prisma-Backend-Architecture.svg?theme=dark)](https://github.com/hyeongu01/TS-Express-Prisma-Backend-Architecture)
+> 전체 프로젝트는 아래 repo 에서 볼 수 있습니다.   
+[\[Github\]: hyeongu01/CashMan-Backend-TS](https://github.com/hyeongu01/CashMan-Backend-TS)
+{: .prompt-info } 
 
