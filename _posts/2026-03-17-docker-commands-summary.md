@@ -7,8 +7,8 @@ tags: [backend, docker]
 ---
 
 ## 0. 개요
-- [ ] docker 를 사용하기 위한 필수 명령어 및 유용한 명령어 정리
-- [ ] 자주 사용하는 mysql, redis 실행 명령어
+- [X] docker 를 사용하기 위한 필수 명령어 및 유용한 명령어 정리
+- [X] 자주 사용하는 mysql, redis 실행 명령어
 - [ ] DockerFile 정리 링크
 - [ ] docker-compose 정리 링크
 
@@ -104,6 +104,7 @@ docker compose build
     - `--env-file .env`: env 파일 로드
 
 ### docker hub 의 이미지를 사용
+- `mysql` 이미지 실행
 ```bash
 # 1. docker hub 의 이미지를 불러옴
 docker pull mysql:latest
@@ -116,6 +117,14 @@ docker ps
 # (Optional) mysql 접속
 docker exec -it mysql-local mysql -u root -p
 ```
+- `redis` 이미지 실행
+```bash
+docker pull redis:latest
+docker images
+docker run -d -p 6379:6379 --name redis-local redis:latest
+docker ps
+```
+
 
 ### dockerfile 사용
 ```bash
@@ -130,3 +139,15 @@ docker logs <container name>
 ```
 
 
+## 4. 결론
+- docker cli 명령어들을 정리하였다.
+- 자주 사용하는 명령어 정리하였다.
+- mysql, redis docker 로 컨테이너 올리는 법 정리하였다.
+
+## 5. 관련 링크
+
+> Dockerfile 구성법 총정리  
+{:.prompt-tip}
+
+> Docker-compose 구성법 총정리
+{:.prompt-tip}
