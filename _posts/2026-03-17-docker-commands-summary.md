@@ -97,8 +97,8 @@ docker compose build
     - `-p <outPort:inPort>`: 컨테이너 내부 / 외부 포트 매핑 설정
     - `--network <name>`: 네트워크 지정
   - 볼륨
-    - -v <host>:<container>
-    - -v <volume>:<container>
+    - `-v <host>:<container>`
+    - `-v <volume>:<container>`
   - 환경변수 / 설정
     - `-e KEY=value`: 환경변수 설정
     - `--env-file .env`: env 파일 로드
@@ -128,3 +128,5 @@ docker run {options} --name <container name> <image name>
 # (Optional) 컨테이너 로그 확인
 docker logs <container name>
 ```
+
+
