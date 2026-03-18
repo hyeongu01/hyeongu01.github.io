@@ -1,6 +1,7 @@
 ---
 layout: post
 title: "[express/typescript] 네이버 소셜 로그인 구현"
+description: "Express와 TypeScript 환경에서 네이버 소셜 로그인(OAuth)을 구현하는 과정을 정리했습니다. Redis를 활용한 state 검증과 AJV 기반 입력 검증까지 포함한 실전 구현 가이드입니다."
 categories: [backend, oauth]
 tags: [typescript, backend, oauth]
 ---
@@ -93,6 +94,35 @@ export const naverRedirect = async (req: Request, res: Response) => {
 //   state 는 추후 callback API 에서 redis 값으로 검증한다.
 ```
 {:file="src/features/auth/auth.router.ts"}
+---
+<details>
+<summary>generateNaverLoginURL 구현 코드</summary>
+<div markdown="1">
+
+---
+**generateNaverLoginURL 구현 코드**
+```ts
+import config from "@config/config";
+import {customError} from "@common/CustomResponse";
+import redis from "@libs/redis";
+import {randomBytes} from "crypto";
+
+export const generateNaverLoginURL = async (): Promise<string> => {
+    const clientId: string | undefined = config.naver?.clientId;
+    const redirectURI: string | undefined = config.naver?.redirectUri;
+    if (!clientId || !redirectURI) throw customError.SERVER_ERROR();
+
+    const state: string = randomBytes(32).toString('hex');
+    await redis.set(`naverLoginState:${state}`, 1, {EX: 300, NX: true});
+
+    return 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + clientId + '&redirect_uri=' + redirectURI + '&state=' + state;
+}
+```
+{:file="src/common/auth/naverLogin.ts"}
+---
+
+</div>
+</details>
 
 ```ts
 import config from "@config/config";
